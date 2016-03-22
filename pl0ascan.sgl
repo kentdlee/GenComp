@@ -1,0 +1,333 @@
+#CLASSES
+    Letter      = 'A'..'Z','a'..'z';
+    Digit       = '0'..'9';
+    Plus        = '+';
+    Minus       = '-';
+    Times       = '*';
+    Divide      = '/';
+    Comma       = ',';
+    Period      = '.';
+    Semicolon   = ';';
+    Colon       = ':';
+    Greater     = '>';
+    Less        = '<';
+    Equal       = '=';
+    LeftPar     = '(';
+    RightPar    = ')';
+    EOF         = 3;    
+#KEYWORDS
+    21: 'CONST';
+    22: 'VAR';
+    23: 'PROCEDURE';
+    24: 'CALL';
+    25: 'BEGIN';
+    26: 'END';
+    27: 'IF';
+    28: 'THEN';
+    29: 'WHILE';
+    30: 'DO';
+    31: 'READ';
+    32: 'WRITE';
+    33: 'ODD';
+#TOKENS
+     1: Identifier    = Letter. (Letter | Digit)*;
+     2: Number        = Digit.Digit*;
+     3: AddOp
+       MINOR 
+      1: Add = Plus,
+      2: Sub = Minus; 
+     4: MultOp
+       MINOR
+      1: Mult = Times,
+      2: Div  = Divide;  
+     5: LeftPar = LeftPar; 
+     6: RightPar = RightPar;
+     7: Comma   = Comma;
+     8: Semicolon   = Semicolon;
+     9: Period = Period; 
+   10: Assign = Colon.Equal ;
+   11: RelOps
+       MINOR
+      1: GreaterThan    = Greater,
+      2: LessThan       = Less,
+      3: EqualTo        = Equal,
+      4: NotEqual       = Less.Greater,
+      5: GreaterOrEqual = Greater.Equal,
+      6: LessOrEqual    = Less.Equal;   
+  999: EndOfFile = EOF;
+ 
+#PRODUCTIONS
+
+ 
+#END
+
+I. THE NFA CREATED FOR THIS INPUT IS:
+
+NODE        ON CLASS        GO TO  (or) GO TO     ACCEPTS
+----        --------        -----       -----     -------
+  1           Letter          2
+  2          EPSILON          7          10
+  3           Letter          4
+  4          EPSILON          8
+  5            Digit          6
+  6          EPSILON          8
+  7          EPSILON          3           5
+  8          EPSILON          7          10
+ 10                                               Identifier
+ 11            Digit         12
+ 12          EPSILON         13          16
+ 13            Digit         14
+ 14          EPSILON         13          16
+ 16                                               Number
+ 17             Plus         18
+ 18                                               Add
+ 19            Minus         20
+ 20                                               Sub
+ 21            Times         22
+ 22                                               Mult
+ 23           Divide         24
+ 24                                               Div
+ 25          LeftPar         26
+ 26                                               LeftPar
+ 27         RightPar         28
+ 28                                               RightPar
+ 29            Comma         30
+ 30                                               Comma
+ 31        Semicolon         32
+ 32                                               Semicolon
+ 33           Period         34
+ 34                                               Period
+ 35            Colon         36
+ 36            Equal         38
+ 38                                               Assign
+ 39          Greater         40
+ 40                                               GreaterThan
+ 41             Less         42
+ 42                                               LessThan
+ 43            Equal         44
+ 44                                               EqualTo
+ 45             Less         46
+ 46          Greater         48
+ 48                                               NotEqual
+ 49          Greater         50
+ 50            Equal         52
+ 52                                               GreaterOrEqual
+ 53             Less         54
+ 54            Equal         56
+ 56                                               LessOrEqual
+ 57              EOF         58
+ 58                                               EndOfFile
+
+
+II. THE DFA FROM THIS NFA IS:
+      THE START STATE IS 1
+
+STATE   1
+   TO   2  ON Letter
+   TO   3  ON Digit
+   TO   4  ON Plus
+   TO   5  ON Minus
+   TO   6  ON Times
+   TO   7  ON Divide
+   TO   8  ON Comma
+   TO   9  ON Period
+   TO  10  ON Semicolon
+   TO  11  ON Colon
+   TO  12  ON Greater
+   TO  13  ON Less
+   TO  14  ON Equal
+   TO  15  ON LeftPar
+   TO  16  ON RightPar
+   TO  17  ON EOF
+
+STATE   2  ACCEPTS  Identifier
+   TO  18  ON Letter
+   TO  19  ON Digit
+
+STATE   3  ACCEPTS  Number
+   TO  20  ON Digit
+
+STATE   4  ACCEPTS  Add
+
+STATE   5  ACCEPTS  Sub
+
+STATE   6  ACCEPTS  Mult
+
+STATE   7  ACCEPTS  Div
+
+STATE   8  ACCEPTS  Comma
+
+STATE   9  ACCEPTS  Period
+
+STATE  10  ACCEPTS  Semicolon
+
+STATE  11
+   TO  21  ON Equal
+
+STATE  12  ACCEPTS  GreaterThan
+   TO  22  ON Equal
+
+STATE  13  ACCEPTS  LessThan
+   TO  23  ON Greater
+   TO  24  ON Equal
+
+STATE  14  ACCEPTS  EqualTo
+
+STATE  15  ACCEPTS  LeftPar
+
+STATE  16  ACCEPTS  RightPar
+
+STATE  17  ACCEPTS  EndOfFile
+
+STATE  18  ACCEPTS  Identifier
+   TO  18  ON Letter
+   TO  19  ON Digit
+
+STATE  19  ACCEPTS  Identifier
+   TO  18  ON Letter
+   TO  19  ON Digit
+
+STATE  20  ACCEPTS  Number
+   TO  20  ON Digit
+
+STATE  21  ACCEPTS  Assign
+
+STATE  22  ACCEPTS  GreaterOrEqual
+
+STATE  23  ACCEPTS  NotEqual
+
+STATE  24  ACCEPTS  LessOrEqual
+
+
+
+DFA STATE         CONTAINS NFA STATES
+     1              1    11    17    19    21
+                   23    25    27    29    31
+                   33    35    39    41    43
+                   45    49    53    57
+     2              2     3     5     7    10
+     3             12    13    16
+     4             18
+     5             20
+     6             22
+     7             24
+     8             30
+     9             34
+    10             32
+    11             36
+    12             40    50
+    13             42    46    54
+    14             44
+    15             26
+    16             28
+    17             58
+    18              3     4     5     7     8
+                   10
+    19              3     5     6     7     8
+                   10
+    20             13    14    16
+    21             38
+    22             52
+    23             48
+    24             56
+
+
+III. THE MINIMAL DFA:
+       THE START STATE IS 1
+
+STATE    1
+   TO   2  ON Letter
+   TO   3  ON Digit
+   TO   4  ON Plus
+   TO   5  ON Minus
+   TO   6  ON Times
+   TO   7  ON Divide
+   TO   8  ON Comma
+   TO   9  ON Period
+   TO  10  ON Semicolon
+   TO  21  ON Colon
+   TO  11  ON Greater
+   TO  12  ON Less
+   TO  13  ON Equal
+   TO  14  ON LeftPar
+   TO  15  ON RightPar
+   TO  16  ON EOF
+
+STATE    2  ACCEPTS  Identifier
+   TO   2  ON Letter
+   TO   2  ON Digit
+
+STATE    3  ACCEPTS  Number
+   TO   3  ON Digit
+
+STATE    4  ACCEPTS  Add
+
+STATE    5  ACCEPTS  Sub
+
+STATE    6  ACCEPTS  Mult
+
+STATE    7  ACCEPTS  Div
+
+STATE    8  ACCEPTS  Comma
+
+STATE    9  ACCEPTS  Period
+
+STATE   10  ACCEPTS  Semicolon
+
+STATE   11  ACCEPTS  GreaterThan
+   TO  18  ON Equal
+
+STATE   12  ACCEPTS  LessThan
+   TO  19  ON Greater
+   TO  20  ON Equal
+
+STATE   13  ACCEPTS  EqualTo
+
+STATE   14  ACCEPTS  LeftPar
+
+STATE   15  ACCEPTS  RightPar
+
+STATE   16  ACCEPTS  EndOfFile
+
+STATE   17  ACCEPTS  Assign
+
+STATE   18  ACCEPTS  GreaterOrEqual
+
+STATE   19  ACCEPTS  NotEqual
+
+STATE   20  ACCEPTS  LessOrEqual
+
+STATE   21
+   TO  17  ON Equal
+
+
+
+MINIMIZED STATE   CONTAINS DFA STATES
+     1              1
+     2              2    18    19
+     3              3    20
+     4              4
+     5              5
+     6              6
+     7              7
+     8              8
+     9              9
+    10             10
+    11             12
+    12             13
+    13             14
+    14             15
+    15             16
+    16             17
+    17             21
+    18             22
+    19             23
+    20             24
+    21             11
+
+************  SUMMARY  ************
+NUMBER OF CLASSES    16
+NUMBER OF TOKENS     19
+NUMBER OF NFA STATES 52
+NUMBER OF DFA STATES 24
+NUMBER OF PARTITIONS 21

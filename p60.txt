@@ -1,0 +1,31 @@
+#CLASSES
+
+EOF = 3;
+
+#TOKENS
+
+'a';
+'b';
+'d';
+'f';
+'x';
+'z';
+eof = EOF;
+
+#PRODUCTIONS
+
+SPrime ::= S eof            (S);
+S ::= 'a' 'b' A E           ("ab"+A+E);
+S ::= 'a' 'b' B 'x'         ("ab"+B+"x");
+S ::= 'a' D                 ("a"+D);
+S ::= A 'z'                 (A+"z");
+S ::= B 'x'                 (B+"x");
+A ::= 'd'                   ("d");
+B ::= 'd'                   ("d");
+D ::= 'f' A                 ("f"+A);
+D ::= 'f' B 'x'             ("f"+B+"x");
+D ::= 'f' 'a' D             ("fa"+D);
+E ::= 'z'                   ("z");
+E ::= null                  ("");
+
+#END

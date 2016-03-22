@@ -1,0 +1,22 @@
+
+
+#CLASSES
+
+digit 	= '0'..'9';
+EOF	= 3;
+
+#TOKENS
+
+element = digit.digit*;
+endoffile = EOF;
+
+#DEFINITIONS
+
+from jpythonbackend import *
+
+#PRODUCTIONS
+
+List ::= element                                                     (block(Block));
+List ::= List ',' element                                            ((FunDecs,VarDecs,Statements));
+
+#END

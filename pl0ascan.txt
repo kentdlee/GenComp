@@ -1,0 +1,62 @@
+#CLASSES
+    Letter      = 'A'..'Z','a'..'z';
+    Digit       = '0'..'9';
+    Plus        = '+';
+    Minus       = '-';
+    Times       = '*';
+    Divide      = '/';
+    Comma       = ',';
+    Period      = '.';
+    Semicolon   = ';';
+    Colon       = ':';
+    Greater     = '>';
+    Less        = '<';
+    Equal       = '=';
+    LeftPar     = '(';
+    RightPar    = ')';
+    EOF         = 3;    
+#KEYWORDS
+    21: 'CONST';
+    22: 'VAR';
+    23: 'PROCEDURE';
+    24: 'CALL';
+    25: 'BEGIN';
+    26: 'END';
+    27: 'IF';
+    28: 'THEN';
+    29: 'WHILE';
+    30: 'DO';
+    31: 'READ';
+    32: 'WRITE';
+    33: 'ODD';
+#TOKENS
+     1: Identifier    = Letter. (Letter | Digit)*;
+     2: Number        = Digit.Digit*;
+     3: AddOp
+       MINOR 
+      1: Add = Plus,
+      2: Sub = Minus; 
+     4: MultOp
+       MINOR
+      1: Mult = Times,
+      2: Div  = Divide;  
+     5: LeftPar = LeftPar; 
+     6: RightPar = RightPar;
+     7: Comma   = Comma;
+     8: Semicolon   = Semicolon;
+     9: Period = Period; 
+   10: Assign = Colon.Equal ;
+   11: RelOps
+       MINOR
+      1: GreaterThan    = Greater,
+      2: LessThan       = Less,
+      3: EqualTo        = Equal,
+      4: NotEqual       = Less.Greater,
+      5: GreaterOrEqual = Greater.Equal,
+      6: LessOrEqual    = Less.Equal;   
+  999: EndOfFile = EOF;
+
+#PRODUCTIONS
+
+
+#END

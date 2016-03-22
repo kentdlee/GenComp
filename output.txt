@@ -1,0 +1,120 @@
+Warning: There is a shift/reduce conflict in state 7 on terminal '*'
+         Conflict will be resolved by shifting.
+LR0State 0
+    On Prog Go To 1
+    Item: Start ::= (*) Prog endoffile 
+
+    Item: Prog ::= (*) Prog Stmt ';' 
+
+    Item: Prog ::= (*)
+        Lookaheads: number, '(', endoffile
+
+
+LR0State 1
+    On number Go To 2
+    On '(' Go To 3
+    On endoffile Go To 4
+    On Stmt Go To 5
+    On E Go To 6
+    On T Go To 7
+    On F Go To 8
+    Item: Stmt ::= (*) E 
+
+    Item: Start ::= Prog (*) endoffile 
+
+    Item: Prog ::= Prog (*) Stmt ';' 
+
+    Item: E ::= (*) T 
+
+    Item: T ::= (*) T '*' F 
+
+    Item: T ::= (*) F 
+
+    Item: F ::= (*) number 
+
+    Item: F ::= (*) '(' E ')' 
+
+
+LR0State 2
+    Item: F ::= number (*)
+        Lookaheads: ')', '*', ';'
+
+
+LR0State 3
+    On number Go To 2
+    On '(' Go To 3
+    On E Go To 12
+    On T Go To 7
+    On F Go To 8
+    Item: E ::= (*) T 
+
+    Item: F ::= '(' (*) E ')' 
+
+    Item: T ::= (*) T '*' F 
+
+    Item: T ::= (*) F 
+
+    Item: F ::= (*) number 
+
+    Item: F ::= (*) '(' E ')' 
+
+
+LR0State 4 is accepting
+    Item: Start ::= Prog endoffile (*)
+
+
+LR0State 5
+    On ';' Go To 11
+    Item: Prog ::= Prog Stmt (*) ';' 
+
+
+LR0State 6
+    Item: Stmt ::= E (*)
+        Lookaheads: ';'
+
+
+LR0State 7
+    On '*' Go To 9
+    Item: E ::= T (*)
+        Lookaheads: ')', '*', ';'
+
+    Item: T ::= T (*) '*' F 
+
+
+LR0State 8
+    Item: T ::= F (*)
+        Lookaheads: ')', '*', ';'
+
+
+LR0State 9
+    On number Go To 2
+    On '(' Go To 3
+    On F Go To 10
+    Item: F ::= (*) number 
+
+    Item: F ::= (*) '(' E ')' 
+
+    Item: T ::= T '*' (*) F 
+
+
+LR0State 10
+    Item: T ::= T '*' F (*)
+        Lookaheads: ')', '*', ';'
+
+
+LR0State 11
+    Item: Prog ::= Prog Stmt ';' (*)
+        Lookaheads: number, '(', endoffile
+
+
+LR0State 12
+    On ')' Go To 13
+    Item: F ::= '(' E (*) ')' 
+
+
+LR0State 13
+    Item: F ::= '(' E ')' (*)
+        Lookaheads: ')', '*', ';'
+
+
+Parsegen completed.

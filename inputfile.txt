@@ -1,0 +1,96 @@
+#CLASSES
+
+(* The classes may contain a single character in single quotes, a single integer representing an 
+   ASCII value or a range of characters with .. between them. They may also contain a comma and single character or range of characters. If the list of ranges is preceeded by a ^ then the actual character class will be everything not in the list of ranges of characters. *)
+
+anyletterbutstar = ^'*';
+anyletterbutlparen = ^'(';
+letter 	= 'A'..'Z', 'a'..'z';
+digit 	= '0'..'9';
+per	= '.';
+gthan 	= '>';
+lthan	= '<';
+equ	= '=';
+scol	= ';';
+leftp	= '(';
+rightp	= ')';
+pl	= '+';
+min	= '-';
+tim	= '*';
+div	= '/';
+col	= ':';
+EOF	= 3;
+
+#KEYWORDS
+
+(* The keywords must all be string constants in single quotes and must be compatible with the 
+   first token in the list of tokens. The keywords section is optional. *)
+
+ 1:'PROGRAM';
+ 2:'BEGIN';
+ 3:'END';
+ 4:'CALL';
+ 5:'READ';
+ 6:'WRITE';
+ 7:'CONST';
+ 8:'VAR';
+ 9:'WHILE';
+10:'DO';
+11:'PROCEDURE';
+14:'IF';
+15:'THEN';
+17:'IS';
+
+#TOKENS
+
+(* The tokens each have a number, a name, an = and then a regular expression. The regular expression may
+   contain character class names, a ^ indicating the beginning of a line or of the stream, a $ 
+   representing the end of a line, or one of the regular expression operators ().*|. Whitespace is 
+   automatically consumed by the resulting scanner which consists of newlines, tabs, linefeeds, and spaces unless indicated by ^ or $. The order of the tokens indicates the order they will be matched
+   and no backtracking will occur to try to further match tokens, so common prefixes in tokens should be 
+   avoided, and if not possible, recognize the first token in a set of common prefix tokens will be matched first. Also note that tokens should extend as far as possible when found in a source file. *)
+
+19:identifier = letter.(letter|digit)*;
+20:constant = digit.digit*;
+21:period = per;
+22:semicolon = scol;
+23:assign = col.equ;
+24:leftpar = leftp;
+25:rightpar = rightp;
+26:gthanoreq = gthan.equ;
+27:lthanoreq = lthan.equ;
+28:greaterthan = gthan;
+29:lessthan = lthan;
+30:equalto = equ;
+31:notequal = lthan.gthan;
+32:plus = pl;
+33:minus = min;
+34:times = tim;
+35:divide = div;
+36:EndOfFile = EOF;
+
+#PRODUCTIONS
+
+(* The productions are ignored by the scanner *)
+
+1:prog ::= progheading block period EndOfFile;
+
+2:progheading ::= PROGRAM identifier semicolon;
+
+5: block ::= vardcl statement;
+
+17: vardcl ::= VAR identifier semicolon;
+
+30: statement ::= identifier assign expression;
+
+60: expression ::= expression addsub term |
+		   61: term;
+
+65: term ::= term multdiv factor |
+	     66: factor;
+
+70: factor ::= identifier |
+	       71: constant |
+               72: leftpar expression rightpar;
+
+#END

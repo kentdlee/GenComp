@@ -1,0 +1,9 @@
+#!/bin/bash
+if [ $# -ne 1 ];
+then
+  echo "usage: testit123 filename"
+  echo "   Compiles or interprets filename as a program from the testit123 language."
+  echo "   Read the gencomp documentation found in gencomp for a description of "
+  echo "   of a gencomp language description file."
+fi
+python3 $name.py $1

@@ -1,0 +1,33 @@
+
+
+#CLASSES
+
+digit   = '0'..'9';
+letter = 'a'..'z', 'A'..'Z';
+EOF = 3;
+
+#TOKENS
+
+identifier = letter.(letter|digit)*;
+number = digit.digit*;
+'(';
+')';
+'+';
+'*';
+endoffile = EOF;
+
+#DEFINITIONS
+
+from expressionbackend import *
+
+#PRODUCTIONS
+
+Start ::= E endoffile                                                (E);
+E ::= E '+' T                                                        (Add(E,T));
+E ::= T                                                              (T);
+T ::= T '*' F                                                        (Mul(T,F));
+T ::= F                                                              (F);
+F ::= identifier                                                     (Id(identifier));
+F ::= '(' E ')'                                                      (E);
+F ::=  number                                                        (Num(number));
+#END
