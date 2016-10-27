@@ -1,0 +1,86 @@
+
+
+#CLASSES
+
+
+(* The classes defines classes of ASCII character codes. All 
+   supported variants of the class definitions are shown here.
+   The ^ operator means that the class includes all ASCII 
+   codes (i.e. 0 to 255) that are NOT the given character
+   codes. The names of the classes below describe their
+   true nature. 
+*)
+
+anycharbutnewline = ^10..13;
+anycharbutquote = ^39;
+anycharbutdoublequote = ^'"';
+quote = 39;
+doublequote = '"';
+pound = '#';
+letter 	= 'A'..'Z', 'a'..'z';
+digit 	= '0'..'9';
+EOF	= 3;
+
+#KEYWORDS
+
+(* Keywords are optional but define the identifier tokens that should
+   be recognized as keywords and not identifiers. 
+   
+   The number is a token identifier that may be used instead of the actual
+   string to identify the keyword. Constants like the name def_keyword
+   are defined by scangen for each keyword identifier in the generated scanner.
+
+   Tokens print, range, True, False are all bindings that exist during code
+   generation so are not recognized as keywords.
+*)
+
+'nil';
+
+
+
+#TOKENS
+
+(* The identifier token must be the first token defined in this list for the keyword
+   definitions given above. 
+   
+   The token identifier numbers also have constants defined for them like the name
+   identifier_token for instance. These names are created by the scangen program in the 
+   generated scanner. 
+   
+   The name "comment" is a special name. If used, it represents comments that are to be 
+   ignored by the scanner. Comment tokens are filtered out by the generated scanner. 
+   
+*)
+
+
+identifier = letter.(letter|digit)*;
+integer = digit.digit*;
+
+'@';
+'::';
+'[';
+']';
+',';
+
+stringconst = (quote . anycharbutquote* . quote) | (doublequote . anycharbutdoublequote* . doublequote);
+comment = pound . anycharbutnewline*;
+endoffile = EOF;
+
+#DEFINITIONS
+
+from listexpressionbackend import *
+
+#PRODUCTIONS
+
+GOAL ::= le endoffile                                                   (le);
+le ::= le '@' lt                                                        (Append(le,lt));
+le ::= lt                                                               (lt);
+lt ::= integer '::' lt                                                  (Cons(Num(integer), lt));
+lt ::= lit                                                              (lit);
+lit ::= '[' listSeq ']'                                                 (listSeq);
+lit ::= 'nil'                                                           (Nil());
+listSeq ::= integer                                                     (Cons(Num(integer),Nil()));
+listSeq ::= integer ',' listSeq                                         (Cons(Num(integer),listSeq));
+listSeq ::= null                                                        (Nil());
+
+#END

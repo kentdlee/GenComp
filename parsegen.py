@@ -413,7 +413,7 @@ class ParserGenerator:
         
         strm.write("class " + prefix + "Parser(Parser):\n")
         strm.write("\tdef __init__(self):\n")
-        strm.write("\t\tsuper().__init__("+repr(self.states)+","+repr(self.tnts)+","+")\n\n")
+        strm.write("\t\tsuper().__init__("+repr(self.states)+","+repr(self.tnts)+")\n\n")
         
         # The following defines an inherited eval method so that 
         # parser return values can be evaluated in the scope of this module.
