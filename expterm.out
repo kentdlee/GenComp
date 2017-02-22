@@ -1,0 +1,115 @@
+Running Scangen
+Scangen Completed.
+Running Parsegen
+LR0State 0
+    On E Go To 1
+    On T Go To 2
+    On number Go To 3
+    On '(' Go To 4
+    Item: Start ::= (*) E endoffile 
+
+    Item: E ::= (*) E '+' T 
+
+    Item: E ::= (*) E '-' T 
+
+    Item: E ::= (*) T 
+
+    Item: T ::= (*) number 
+
+    Item: T ::= (*) '(' E ')' 
+
+
+LR0State 1
+    On '+' Go To 7
+    On '-' Go To 8
+    On endoffile Go To 11
+    Item: Start ::= E (*) endoffile 
+
+    Item: E ::= E (*) '+' T 
+
+    Item: E ::= E (*) '-' T 
+
+
+LR0State 2
+    Item: E ::= T (*)
+        Lookaheads: ')', '+', '-', endoffile
+
+
+LR0State 3
+    Item: T ::= number (*)
+        Lookaheads: ')', '+', '-', endoffile
+
+
+LR0State 4
+    On E Go To 5
+    On T Go To 2
+    On number Go To 3
+    On '(' Go To 4
+    Item: E ::= (*) E '+' T 
+
+    Item: T ::= '(' (*) E ')' 
+
+    Item: E ::= (*) E '-' T 
+
+    Item: E ::= (*) T 
+
+    Item: T ::= (*) number 
+
+    Item: T ::= (*) '(' E ')' 
+
+
+LR0State 5
+    On ')' Go To 6
+    On '+' Go To 7
+    On '-' Go To 8
+    Item: E ::= E (*) '+' T 
+
+    Item: T ::= '(' E (*) ')' 
+
+    Item: E ::= E (*) '-' T 
+
+
+LR0State 6
+    Item: T ::= '(' E ')' (*)
+        Lookaheads: ')', '+', '-', endoffile
+
+
+LR0State 7
+    On number Go To 3
+    On '(' Go To 4
+    On T Go To 9
+    Item: T ::= (*) number 
+
+    Item: T ::= (*) '(' E ')' 
+
+    Item: E ::= E '+' (*) T 
+
+
+LR0State 8
+    On number Go To 3
+    On '(' Go To 4
+    On T Go To 10
+    Item: T ::= (*) number 
+
+    Item: T ::= (*) '(' E ')' 
+
+    Item: E ::= E '-' (*) T 
+
+
+LR0State 9
+    Item: E ::= E '+' T (*)
+        Lookaheads: ')', '+', '-', endoffile
+
+
+LR0State 10
+    Item: E ::= E '-' T (*)
+        Lookaheads: ')', '+', '-', endoffile
+
+
+LR0State 11 is accepting
+    Item: Start ::= E endoffile (*)
+
+
+Parsegen completed.
+Generating expterm.py
+Generating the compiler expterm

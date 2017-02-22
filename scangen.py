@@ -9,6 +9,7 @@
 import sys
 import stack
 import state
+import nfastate
 import streamreader
 import scanner
 import orderedcollections
@@ -131,7 +132,7 @@ class NFA:
         
         def newState():
             self.numStates+=1
-            aState = state.State(self.numStates)
+            aState = nfastate.NFAState(self.numStates)
             self.states[self.numStates] = aState
             return self.numStates
             
@@ -284,7 +285,7 @@ class NFA:
                 
          
         # Create a 0th State as the start state   
-        startState = state.State(0)
+        startState = nfastate.NFAState(0)
         self.numStates += 1
         self.states[0] = startState
         
@@ -313,8 +314,9 @@ class NFA:
                 
             outStream.write("%5d %34s\n"%(stateId,tokenName))
                 
-            for (onClass,toStateId) in self.states[stateId].getTransitions():       
-                outStream.write("%18s     %5d\n"%(onClass,toStateId))
+            for onClass in self.states[stateId].getTransitions(): 
+                for toStateId in self.states[stateId].getTransitions()[onClass]:      
+                    outStream.write("%18s     %5d\n"%(onClass,toStateId))
                 
             outStream.write("\n")
             
@@ -354,31 +356,28 @@ class DFA:
             
             while changed:
                 changed = False
-                toStates = orderedcollections.OrderedSet()
                 for stateId in closureSet:
                     state = nfa.states[stateId]
-                    for onClass, toStateId in state.getTransitions():
-                        if onClass == epsilon and not toStateId in closureSet:
-                            toStates.add(toStateId)
+                    if epsilon in state.getTransitions():
+                        toStates = state.getTransitions()[epsilon]
+                        if not toStates <= closureSet:
+                            closureSet.update(toStates)
                             changed = True
-                            
-                closureSet.update(toStates)
             
             return closureSet
         
         def nfaTransTo(fromStates, onClass):
             toStates = orderedcollections.OrderedSet()
             for fromStateId in fromStates:
-                for transClass, toStateId in nfa.states[fromStateId].getTransitions():
-                    if transClass == onClass:
-                        toStates.add(toStateId)
+                if onClass in nfa.states[fromStateId].getTransitions():
+                    toStates.update(nfa.states[fromStateId].getTransitions()[onClass])
                         
             return EPSclosure(toStates)
         
         def gatherClasses(states):
             classes = orderedcollections.OrderedSet()
             for stateId in states:
-                for transClass, toStateId in nfa.states[stateId].getTransitions():
+                for transClass in nfa.states[stateId].getTransitions():
                     if transClass != epsilon:
                         classes.add(transClass)
                         
@@ -418,7 +417,7 @@ class DFA:
                 for fromNFAStateId in nfaStates:
                     fromNFAState = nfa.states[fromNFAStateId]
                     if fromNFAState.hasTransition(onclass):
-                        toNFAStates.add(fromNFAState.onClassGoTo(onclass))
+                        toNFAStates.update(fromNFAState.onClassGoTo(onclass))
                         
                 toNFAStates = EPSclosure(toNFAStates)
                 nfaSet = orderedcollections.OrderedFrozenSet(toNFAStates)
@@ -459,8 +458,10 @@ class DFA:
                 
             outStream.write("%5d %34s\n"%(stateId,tokenName))
                 
-            for (onClass,toStateId) in self.states[stateId].getTransitions():       
-                outStream.write("%18s     %5d\n"%(onClass,toStateId))
+            trans = self.states[stateId].getTransitions()
+
+            for onClass in trans:       
+                outStream.write("%18s     %5d\n"%(onClass,trans[onClass]))
                 
             outStream.write("\n")  
             
@@ -492,7 +493,7 @@ class MinimalDFA:
             classes = orderedcollections.OrderedSet()
             
             for dfaStateId in self.stateMap[minStateId]:
-                for (onClass,toDFAStateId) in dfa.states[dfaStateId].getTransitions():
+                for onClass in dfa.states[dfaStateId].getTransitions():
                     classes.add(onClass)
                     
             return classes
@@ -546,7 +547,9 @@ class MinimalDFA:
                 for dfaStateId in self.stateMap[minStateId]:
                     if dfa.states[dfaStateId].isAccepting():
                         minState.setAccepting(dfa.states[dfaStateId].getAcceptsTokenId())
-                    for (onClass,toDFAStateId) in dfa.states[dfaStateId].getTransitions():
+                    trans = dfa.states[dfaStateId].getTransitions()
+                    for onClass in trans:
+                        toDFAStateId = trans[onClass]
                         dfaState = dfa.states[toDFAStateId]
                         if not minState.hasTransition(onClass):
                             toStateId = self.dfa2min[toDFAStateId]
@@ -630,8 +633,10 @@ class MinimalDFA:
                 
             outStream.write("%5d %34s\n"%(stateId,tokenName))
                 
-            for (onClass,toStateId) in self.states[stateId].getTransitions():       
-                outStream.write("%18s     %5d\n"%(onClass,toStateId))
+            trans = self.states[stateId].getTransitions()
+
+            for onClass in trans:       
+                outStream.write("%18s     %5d\n"%(onClass,trans[onClass]))
                 
             outStream.write("\n")  
             
@@ -681,16 +686,16 @@ def main():
     
     nfa = NFA()
     nfa.buildMachine(instream)
-    #print(repr(nfa))
-    #nfa.writeListing(sys.stdout)
+    print(repr(nfa))
+    nfa.writeListing(sys.stdout)
     
     dfa = DFA()
     dfa.buildFromNFA(nfa)
-    #dfa.writeListing(sys.stdout)
+    dfa.writeListing(sys.stdout)
        
     minDFA = MinimalDFA()
     minDFA.buildFromDFA(dfa)
-    #minDFA.writeListing(sys.stdout)  
+    minDFA.writeListing(sys.stdout)  
     minDFA.writeScanner(outstream, lst[0], nfa.getFirstTokenId())
         
     print("Scangen Completed.")      

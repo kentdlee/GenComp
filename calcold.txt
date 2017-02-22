@@ -1,0 +1,29 @@
+#CLASSES
+
+digit   = '0'..'9';
+EOF = 3;
+
+#TOKENS
+
+number = digit.digit*;
+'(';
+')';
+'+';
+'*';
+';';
+endoffile = EOF;
+
+#PRODUCTIONS
+
+Start ::= Prog endoffile                                             (Prog);
+Prog ::= Prog Stmt ';'                                               (None);
+Prog ::= null                                                        (None);
+Stmt ::= E                                                           (print(E));
+E ::= E '+' T                                                        (int(E)+int(T));
+    | T                                                              (T);
+T ::= T '*' F                                                        (int(T)*int(F));
+    | F                                                              (F);
+F ::=  number                                                        (number);
+F ::= '(' E ')'                                                      (E);
+
+#END

@@ -1,6 +1,4 @@
-NoTransition = -1
-    
-class State:
+class NFAState:
     def __init__(self, id, acceptsTokenId = None, transitions = {}):
         # An id of -1 is not allowed since that indicates there is 
         # no transition on a value.
@@ -14,6 +12,7 @@ class State:
         # would add that transition to every state. Wow! Talk about
         # bad semantics...
         self.transitions = dict(transitions)
+
         self.acceptsTokenId = acceptsTokenId
         
         # This will cause onGoTo to generate an Exception if called
@@ -23,19 +22,20 @@ class State:
     def setClasses(self, classes):
         self.classes = classes      
         
-    def addTransition(self, onClass, toState):
+    def addTransition(self, onClass, toStateId):
         if onClass in self.transitions:
-            raise Exception("Duplicate Transition " + str(onClass) + ". Consider using NFA State instead.")
-        self.transitions[onClass] = toState
+            self.transitions[onClass].add(toStateId)
+        else:
+            self.transitions[onClass] = set([toStateId])
         
     def hasTransition(self, onClass):
         return onClass in self.transitions
     
     def onClassGoTo(self, onClass):
-        if self.hasTransition(onClass):
+        if onClass in self.transitions:
             return self.transitions[onClass]
             
-        return NoTransition
+        return set([])
     
     # You must call setClasses before calling the onGoTo method.
     def onGoTo(self, on):
@@ -43,7 +43,7 @@ class State:
             if on in self.classes[aClass]:
                 return self.transitions[aClass]
             
-        return NoTransition       
+        return set([])       
                   
     def getTransitions(self):
         return self.transitions
@@ -61,16 +61,17 @@ class State:
         return self.acceptsTokenId
     
     def __repr__(self):
-        return "State(" + repr(self.id) + "," + repr(self.acceptsTokenId) + "," + \
+        return "NFAState(" + repr(self.id) + "," + repr(self.acceptsTokenId) + "," + \
             repr(self.transitions) + ")"
     
     def __str__(self):
         val = ""
-        val = "State " + str(self.id) + "\n" 
+        val = "NFAState " + str(self.id) + "\n" 
         if self.acceptsTokenId != None:
             val += "    accepts token with identifier: " + str(self.acceptsTokenId) + "\n"
             
         for onClass in self.transitions:
-            val += "    On " + str(onClass) + " Go To " + str(self.transitions[onClass]) + "\n"
+            for toStateId in self.transitions[onClass]:
+                val += "    On " + str(on) + " Go To " + str(toStateId) + "\n"
             
         return val

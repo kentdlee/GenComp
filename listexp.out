@@ -1,0 +1,153 @@
+Running Scangen
+Scangen Completed.
+Running Parsegen
+LR0State 0
+    On 'nil' Go To 1
+    On integer Go To 2
+    On '[' Go To 3
+    On le Go To 4
+    On lt Go To 5
+    On lit Go To 6
+    Item: GOAL ::= (*) le endoffile 
+
+    Item: le ::= (*) le '@' lt 
+
+    Item: le ::= (*) lt 
+
+    Item: lt ::= (*) integer '::' lt 
+
+    Item: lt ::= (*) lit 
+
+    Item: lit ::= (*) '[' listSeq ']' 
+
+    Item: lit ::= (*) 'nil' 
+
+
+LR0State 1
+    Item: lit ::= 'nil' (*)
+        Lookaheads: endoffile, '@'
+
+
+LR0State 2
+    On '::' Go To 15
+    Item: lt ::= integer (*) '::' lt 
+
+
+LR0State 3
+    On integer Go To 10
+    On listSeq Go To 11
+    Item: listSeq ::= (*) integer 
+
+    Item: lit ::= '[' (*) listSeq ']' 
+
+    Item: listSeq ::= (*) integer ',' listSeq 
+
+    Item: listSeq ::= (*)
+        Lookaheads: ']'
+
+
+LR0State 4
+    On endoffile Go To 7
+    On '@' Go To 8
+    Item: GOAL ::= le (*) endoffile 
+
+    Item: le ::= le (*) '@' lt 
+
+
+LR0State 5
+    Item: le ::= lt (*)
+        Lookaheads: endoffile, '@'
+
+
+LR0State 6
+    Item: lt ::= lit (*)
+        Lookaheads: endoffile, '@'
+
+
+LR0State 7 is accepting
+    Item: GOAL ::= le endoffile (*)
+
+
+LR0State 8
+    On 'nil' Go To 1
+    On integer Go To 2
+    On lt Go To 9
+    On lit Go To 6
+    On '[' Go To 3
+    Item: lt ::= (*) integer '::' lt 
+
+    Item: lt ::= (*) lit 
+
+    Item: le ::= le '@' (*) lt 
+
+    Item: lit ::= (*) '[' listSeq ']' 
+
+    Item: lit ::= (*) 'nil' 
+
+
+LR0State 9
+    Item: le ::= le '@' lt (*)
+        Lookaheads: endoffile, '@'
+
+
+LR0State 10
+    On ',' Go To 13
+    Item: listSeq ::= integer (*)
+        Lookaheads: ']'
+
+    Item: listSeq ::= integer (*) ',' listSeq 
+
+
+LR0State 11
+    On ']' Go To 12
+    Item: lit ::= '[' listSeq (*) ']' 
+
+
+LR0State 12
+    Item: lit ::= '[' listSeq ']' (*)
+        Lookaheads: endoffile, '@'
+
+
+LR0State 13
+    On integer Go To 10
+    On listSeq Go To 14
+    Item: listSeq ::= (*) integer 
+
+    Item: listSeq ::= (*) integer ',' listSeq 
+
+    Item: listSeq ::= integer ',' (*) listSeq 
+
+    Item: listSeq ::= (*)
+        Lookaheads: ']'
+
+
+LR0State 14
+    Item: listSeq ::= integer ',' listSeq (*)
+        Lookaheads: ']'
+
+
+LR0State 15
+    On 'nil' Go To 1
+    On integer Go To 2
+    On lt Go To 16
+    On lit Go To 6
+    On '[' Go To 3
+    Item: lt ::= (*) integer '::' lt 
+
+    Item: lt ::= (*) lit 
+
+    Item: lt ::= integer '::' (*) lt 
+
+    Item: lit ::= (*) '[' listSeq ']' 
+
+    Item: lit ::= (*) 'nil' 
+
+
+LR0State 16
+    Item: lt ::= integer '::' lt (*)
+        Lookaheads: endoffile, '@'
+
+
+Parsegen completed.
+Generating listexp.py
+Generating the compiler listexp
