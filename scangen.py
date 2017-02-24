@@ -349,22 +349,24 @@ class DFA:
             return None
             
             
-        
         def EPSclosure(stateSet):
             closureSet = orderedcollections.OrderedSet(stateSet)
-            changed = True
+            stck = stack.Stack()
+            for stateId in stateSet:
+                stck.push(stateId)
+                closureSet.add(stateId)
             
-            while changed:
-                changed = False
-                for stateId in closureSet:
-                    state = nfa.states[stateId]
-                    if epsilon in state.getTransitions():
-                        toStates = state.getTransitions()[epsilon]
-                        if not toStates <= closureSet:
-                            closureSet.update(toStates)
-                            changed = True
-            
-            return closureSet
+            while not stck.isEmpty():
+                stateId = stck.pop()
+                state = nfa.states[stateId]
+                if epsilon in state.getTransitions():
+                    toStates = state.getTransitions()[epsilon]
+                    for toStateId in toStates:
+                        if not toStateId in closureSet:
+                            closureSet.add(toStateId)
+                            stck.push(toStateId)
+      
+            return orderedcollections.OrderedFrozenSet(closureSet)
         
         def nfaTransTo(fromStates, onClass):
             toStates = orderedcollections.OrderedSet()
@@ -392,7 +394,7 @@ class DFA:
         self.stateMap = orderedcollections.OrderedMap()
         
         # This is the dfa state that maps to all the EPS-closure of the NFA start state.
-        nfaSet = orderedcollections.OrderedFrozenSet(EPSclosure(orderedcollections.OrderedSet([0])))
+        nfaSet = EPSclosure(orderedcollections.OrderedSet([0]))
         self.stateMap[self.startStateId] = nfaSet
 
         newDFAStates = orderedcollections.OrderedSet([self.startStateId])
@@ -419,8 +421,7 @@ class DFA:
                     if fromNFAState.hasTransition(onclass):
                         toNFAStates.update(fromNFAState.onClassGoTo(onclass))
                         
-                toNFAStates = EPSclosure(toNFAStates)
-                nfaSet = orderedcollections.OrderedFrozenSet(toNFAStates)
+                nfaSet = EPSclosure(toNFAStates)
                 
                 if nfaSet in nfa2dfa:
                     # The DFA state already exists
