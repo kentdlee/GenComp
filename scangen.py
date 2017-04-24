@@ -11,7 +11,6 @@ import stack
 import state
 import nfastate
 import streamreader
-import scanner
 import orderedcollections
 
 epsilon = "EPSILON"
@@ -415,14 +414,8 @@ class DFA:
             classes = gatherClasses(nfaStates)
             
             for onclass in classes:
-                toNFAStates = orderedcollections.OrderedSet()
-                for fromNFAStateId in nfaStates:
-                    fromNFAState = nfa.states[fromNFAStateId]
-                    if fromNFAState.hasTransition(onclass):
-                        toNFAStates.update(fromNFAState.onClassGoTo(onclass))
-                        
-                nfaSet = EPSclosure(toNFAStates)
-                
+                nfaSet = nfaTransTo(nfaStates,onclass)
+
                 if nfaSet in nfa2dfa:
                     # The DFA state already exists
                     dfaStateId = nfa2dfa[nfaSet]
@@ -642,7 +635,7 @@ class MinimalDFA:
             outStream.write("\n")  
             
     def writeScanner(self, outStream, prefix, identifierTokenId):
-        outStream.write("from scanner import *\n")
+        outStream.write("from genscanner import *\n")
         outStream.write("from state import *\n")
         
         commentTokenId = None

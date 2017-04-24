@@ -1,0 +1,24 @@
+#CLASSES
+
+digit   = '0'..'9';
+EOF = 3;
+
+#TOKENS
+
+number = digit.digit*;
+'+';
+'*';
+endoffile = EOF;
+
+#DEFINITIONS
+
+from expressionbackend import *
+
+#PRODUCTIONS
+
+Start ::= E endoffile                                                  (E);
+E ::= E E '+'                                                          (Add(E1,E2));
+E ::= E E '*'                                                          (Mul(E1,E2));
+E ::= number                                                           (Num(number));
+
+#END

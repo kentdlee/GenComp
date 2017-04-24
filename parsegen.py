@@ -9,7 +9,6 @@
 import sys
 import stack
 import streamreader
-import scanner
 from lr0state import *
     
         
@@ -409,7 +408,7 @@ class ParserGenerator:
             
     def writeParser(self,strm,prefix):
         strm.write(self.definitions.strip()+"\n")
-        strm.write("from parser import *\n\n")
+        strm.write("from genparser import *\n\n")
         
         strm.write("class " + prefix + "Parser(Parser):\n")
         strm.write("\tdef __init__(self):\n")

@@ -7,4 +7,5 @@ then
   echo "   evaluate expressions as they are typed."
   exit
 fi
+echo "Enter expressions with +,-,*,/,S (for store), and R (for recall) and terminated by a semicolon (i.e. ;)."
 python3 calculator.py

@@ -1,4 +1,357 @@
 Running Scangen
+The NFA CREATED FOR THE REGULAR EXPRESSIONS IS:
+
+The start state is: 0
+
+STATE     ON CLASS     GO TO     ACCEPTS
+-----     --------     -----     -------
+    0                                   
+           EPSILON        64
+           EPSILON        66
+           EPSILON        11
+           EPSILON        19
+           EPSILON        21
+           EPSILON        23
+           EPSILON        56
+           EPSILON        26
+           EPSILON        28
+           EPSILON        30
+
+    1                                   
+            letter         2
+
+    2                                   
+           EPSILON         9
+
+    3                                   
+            letter         4
+
+    4                                   
+           EPSILON         8
+
+    5                                   
+             digit         6
+
+    6                                   
+           EPSILON         8
+
+    7                                   
+           EPSILON         3
+           EPSILON         5
+
+    8                                   
+           EPSILON        10
+
+    9                                   
+           EPSILON        10
+           EPSILON         7
+
+   10                                   
+           EPSILON         9
+           EPSILON        12
+
+   11                                   
+           EPSILON         1
+
+   12                         identifier
+
+   13                                   
+             digit        14
+
+   14                                   
+           EPSILON        17
+
+   15                                   
+             digit        16
+
+   16                                   
+           EPSILON        18
+
+   17                                   
+           EPSILON        18
+           EPSILON        15
+
+   18                                   
+           EPSILON        17
+           EPSILON        20
+
+   19                                   
+           EPSILON        13
+
+   20                            integer
+
+   21                                   
+                 @        22
+
+   22                                  @
+
+   23                                   
+                 :        24
+
+   24                                   
+                 :        25
+
+   25                                 ::
+
+   26                                   
+                 [        27
+
+   27                                  [
+
+   28                                   
+                 ]        29
+
+   29                                  ]
+
+   30                                   
+                 ,        31
+
+   31                                  ,
+
+   32                                   
+             quote        33
+
+   33                                   
+           EPSILON        36
+
+   34                                   
+   anycharbutquote        35
+
+   35                                   
+           EPSILON        37
+
+   36                                   
+           EPSILON        34
+           EPSILON        37
+
+   37                                   
+           EPSILON        36
+           EPSILON        39
+
+   38                                   
+           EPSILON        32
+
+   39                                   
+           EPSILON        40
+
+   40                                   
+             quote        41
+
+   41                                   
+           EPSILON        43
+
+   42                                   
+           EPSILON        38
+
+   43                                   
+           EPSILON        57
+
+   44                                   
+       doublequote        45
+
+   45                                   
+           EPSILON        48
+
+   46                                   
+anycharbutdoublequote        47
+
+   47                                   
+           EPSILON        49
+
+   48                                   
+           EPSILON        49
+           EPSILON        46
+
+   49                                   
+           EPSILON        48
+           EPSILON        51
+
+   50                                   
+           EPSILON        44
+
+   51                                   
+           EPSILON        52
+
+   52                                   
+       doublequote        53
+
+   53                                   
+           EPSILON        55
+
+   54                                   
+           EPSILON        50
+
+   55                                   
+           EPSILON        57
+
+   56                                   
+           EPSILON        42
+           EPSILON        54
+
+   57                        stringconst
+
+   58                                   
+             pound        59
+
+   59                                   
+           EPSILON        62
+
+   60                                   
+ anycharbutnewline        61
+
+   61                                   
+           EPSILON        63
+
+   62                                   
+           EPSILON        60
+           EPSILON        63
+
+   63                                   
+           EPSILON        65
+           EPSILON        62
+
+   64                                   
+           EPSILON        58
+
+   65                            comment
+
+   66                                   
+               EOF        67
+
+   67                          endoffile
+
+The DFA CREATED FOR THE REGULAR EXPRESSIONS IS:
+
+The start state is: 0
+
+STATE     ON CLASS     GO TO     ACCEPTS
+-----     --------     -----     -------
+    0                                   
+                 ]         6
+                 [         5
+                 @         3
+             digit         7
+             quote        11
+                 :         2
+             pound        10
+            letter         9
+                 ,         1
+       doublequote         8
+               EOF         4
+
+    1                                  ,
+
+    2                                   
+                 :        12
+
+    3                                  @
+
+    4                          endoffile
+
+    5                                  [
+
+    6                                  ]
+
+    7                            integer
+             digit        13
+
+    8                                   
+anycharbutdoublequote        14
+       doublequote        15
+
+    9                         identifier
+            letter        17
+             digit        16
+
+   10                            comment
+ anycharbutnewline        18
+
+   11                                   
+             quote        20
+   anycharbutquote        19
+
+   12                                 ::
+
+   13                            integer
+             digit        13
+
+   14                                   
+anycharbutdoublequote        14
+       doublequote        15
+
+   15                        stringconst
+
+   16                         identifier
+            letter        17
+             digit        16
+
+   17                         identifier
+            letter        17
+             digit        16
+
+   18                            comment
+ anycharbutnewline        18
+
+   19                                   
+             quote        20
+   anycharbutquote        19
+
+   20                        stringconst
+
+The MINIMAL DFA CREATED FOR THE REGULAR EXPRESSIONS IS:
+
+The start state is: 0
+
+STATE     ON CLASS     GO TO     ACCEPTS
+-----     --------     -----     -------
+    0                                   
+                 ]         5
+                 [         4
+               EOF         3
+            letter         7
+             digit         6
+                 :        11
+             pound         8
+                 ,         1
+             quote        13
+       doublequote        12
+                 @         2
+
+    1                                  ,
+
+    2                                  @
+
+    3                          endoffile
+
+    4                                  [
+
+    5                                  ]
+
+    6                            integer
+             digit         6
+
+    7                         identifier
+             digit         7
+            letter         7
+
+    8                            comment
+ anycharbutnewline         8
+
+    9                                 ::
+
+   10                        stringconst
+
+   11                                   
+                 :         9
+
+   12                                   
+anycharbutdoublequote        12
+       doublequote        10
+
+   13                                   
+   anycharbutquote        13
+             quote        10
+
 Scangen Completed.
 Running Parsegen
 LR0State 0

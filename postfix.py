@@ -1,19 +1,19 @@
-import listexpscanner
-import listexpparser
+import postfixscanner
+import postfixparser
 import sys
 
 
 def main():
     
     if (len(sys.argv)) != 2:
-        print("usage: listexp filename")
-        print("   listexp will interpret/compile the expression in the file named")
+        print("usage: postfix filename")
+        print("   postfix will interpret/compile the expression in the file named")
         print("   filename and print its result to standard output")
         return
     
     strm = open(sys.argv[1],"r")
-    theScanner = listexpscanner.listexpScanner(strm)
-    theParser = listexpparser.listexpParser()
+    theScanner = postfixscanner.postfixScanner(strm)
+    theParser = postfixparser.postfixParser()
     
     ast = theParser.parse(theScanner)
     print(ast)

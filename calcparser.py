@@ -1,5 +1,5 @@
 from calcbackend import *
-from parser import *
+from genparser import *
 
 class calcParser(Parser):
 	def __init__(self):
