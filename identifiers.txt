@@ -61,7 +61,6 @@ doublequote = '"';
 pound = '#';
 letter 	= 'A'..'Z', 'a'..'z';
 digit 	= '0'..'9';
-underscore = '_';
 EOF	= 3;
 
 #KEYWORDS
@@ -109,30 +108,8 @@ EOF	= 3;
 *)
 
 
-identifier = (underscore|letter).(underscore|letter|digit)*;
-integer = digit.digit*;
-'>=';
-'<=';
-'==';
-'!=';
-'>';
-'<';
-'=';
-'(';
-')';
-'+';
-'-';
-'*';
-'/';
-'[';
-']';
-'{';
-'}';
-',';
-';';
-stringconst = (quote . anycharbutquote* . quote) | (doublequote . anycharbutdoublequote* . doublequote);
-comment = pound . anycharbutnewline*;
-endoffile = EOF;
+identifier = letter.(letter|digit)*;
+
 
 #DEFINITIONS
 

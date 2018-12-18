@@ -1,4 +1,4 @@
-from scanner import *
+from genscanner import *
 from state import *
 
 #TOKEN Constants
@@ -9,5 +9,5 @@ IDToTokenMap = {0:'number',1:'(',2:')',3:'+',4:'*',5:'endoffile'}
 
 class expScanner(Scanner):
 	def __init__(self,instream):
-		super().__init__(instream,0,{0: State(0,None,[('(', 1), (')', 2), ('*', 3), ('+', 4), ('EOF', 5), ('digit', 6)]), 1: State(1,1,[]), 2: State(2,2,[]), 3: State(3,4,[]), 4: State(4,3,[]), 5: State(5,5,[]), 6: State(6,0,[('digit', 6)])},{'+': OrderedSet({43}), 'EPSILON': OrderedSet(), '(': OrderedSet({40}), ')': OrderedSet({41}), 'digit': OrderedSet({48, 49, 50, 51, 52, 53, 54, 55, 56, 57}), '*': OrderedSet({42}), 'EOF': OrderedSet({3})},{},0,False)
+		super().__init__(instream,0,{0: State(0,None,{'(': 1, ')': 2, '*': 3, '+': 4, 'EOF': 5, 'digit': 6}), 1: State(1,1,{}), 2: State(2,2,{}), 3: State(3,4,{}), 4: State(4,3,{}), 5: State(5,5,{}), 6: State(6,0,{'digit': 6})},{'EPSILON': OrderedSet(), 'digit': OrderedSet({48, 49, 50, 51, 52, 53, 54, 55, 56, 57}), 'EOF': OrderedSet({3}), '(': OrderedSet({40}), ')': OrderedSet({41}), '+': OrderedSet({43}), '*': OrderedSet({42})},{},0,False)
 

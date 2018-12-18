@@ -1,0 +1,19 @@
+#CLASSES
+
+a = 'a';
+b = 'b';
+EOF = 3;
+
+#TOKENS
+
+one = a.b.a.b*;
+two = a.b.a*;
+eof = EOF;
+
+#PRODUCTIONS
+
+Prog ::= OneOrTwo eof            (OneOrTwo);
+OneOrTwo ::= one                 (one);
+OneOrTwo ::= two                 (two);
+
+#END

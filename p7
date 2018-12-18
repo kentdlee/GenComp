@@ -1,0 +1,10 @@
+#!/bin/bash
+if [ $# -ne 1 ];
+then
+  echo "usage: p7 filename"
+  echo "   Compiles or interprets filename as a program from the p7 language."
+  echo "   Read the gencomp documentation found in gencomp for a description of "
+  echo "   of a gencomp language description file."
+  exit
+fi
+python3 p7.py $1

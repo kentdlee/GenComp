@@ -1,5 +1,5 @@
 from expressionbackend import *
-from parser import *
+from genparser import *
 
 class exptermParser(Parser):
 	def __init__(self):

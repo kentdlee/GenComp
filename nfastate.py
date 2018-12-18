@@ -65,7 +65,6 @@ class NFAState:
             repr(self.transitions) + ")"
     
     def __str__(self):
-        val = ""
         val = "NFAState " + str(self.id) + "\n" 
         if self.acceptsTokenId != None:
             val += "    accepts token with identifier: " + str(self.acceptsTokenId) + "\n"

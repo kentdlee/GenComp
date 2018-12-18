@@ -1,0 +1,29 @@
+# This output goes with the picture on Katie. It is the top of the stack for each iteration.
+
+#Kent's Mac> listexp listprog2.txt
+#0 None
+#3 [
+#10 3
+#13 ,
+#10 4
+#14 Cons(Num(4),Nil())
+#11 Cons(Num(3),Cons(Num(4),Nil()))
+#12 ]
+#6 Cons(Num(3),Cons(Num(4),Nil()))
+#5 Cons(Num(3),Cons(Num(4),Nil()))
+#4 Cons(Num(3),Cons(Num(4),Nil()))
+#8 @
+#2 1
+#15 ::
+#2 2
+#15 ::
+#1 nil
+#6 Nil()
+#16 Nil()
+#16 Cons(Num(2),Nil())
+#9 Cons(Num(1),Cons(Num(2),Nil()))
+#4 Append(Cons(Num(3),Cons(Num(4),Nil())),Cons(Num(1),Cons(Num(2),Nil())))
+#7
+#Append(Cons(Num(3),Cons(Num(4),Nil())),Cons(Num(1),Cons(Num(2),Nil())))
+
+[3,4] @ 1::2::nil

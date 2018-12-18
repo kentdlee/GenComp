@@ -1,8 +1,8 @@
 #!/bin/bash
-# compgen filename.ext
+# gencomp filename.ext
 # filename.ext must be in the format given below.
-if [ $# -ne 1 ]; 
-then 
+if [ $# -ne 1 ];
+then
   echo "usage: gencomp filename.ext"
   echo "   generates a compiler called filenamec from the filename.ext language description."
   exit
@@ -61,63 +61,63 @@ echo 'fi' >> "$name"
 echo 'python3 '$name'.py $1' >> "$name"
 chmod  +x "$name"
 
-# Sample compgen input file format. Note that each section
+# Sample gencomp input file format. Note that each section
 # in the input file does start with a #. Sections are CLASSES
 # KEYWORDS, TOKENS, DEFINITIONS, PRODUCTIONS, and END. The
-# KEYWORDS and DEFINITIONS sections are optional. 
+# KEYWORDS and DEFINITIONS sections are optional.
 
-# An eof token must be included with value of 3 since the 
-# generated scanner will return that token at the end of input. 
-# If there are keywords in the language definition, then the 
-# first token must be the identifier token so it can be 
-# compared to keywords which take precedent over the identifier 
+# An eof token must be included with value of 3 since the
+# generated scanner will return that token at the end of input.
+# If there are keywords in the language definition, then the
+# first token must be the identifier token so it can be
+# compared to keywords which take precedent over the identifier
 # token.
 
 # The grammar must be augmented which means that it must contain
-# a start nonterminal which goes to the original start symbol of 
-# the grammar and ends with the eof token. 
+# a start nonterminal which goes to the original start symbol of
+# the grammar and ends with the eof token.
 
 # The definitions must contain classes or code that will be evaluated
 # as each production is matched to build a return value from
-# the parser. 
+# the parser.
 
 #################################################################
-# Beginning of the first sample input file. 
+# Beginning of the first sample input file.
 #################################################################
-# (* This a sample input file for the scangen.py program. The 
-#    program reads an input file like this one and produces a 
-#    scanner which is capable of tokenizing the input for the 
-#    programming language defined in this file. For instance, 
+# (* This a sample input file for the scangen.py program. The
+#    program reads an input file like this one and produces a
+#    scanner which is capable of tokenizing the input for the
+#    programming language defined in this file. For instance,
 #    this file defines the programming language for a variant
-#    of Python I have called JPython. It is a combination of 
-#    Java and Python. 
-   
+#    of Python I have called JPython. It is a combination of
+#    Java and Python.
+
 #    Here is a sample program from that language.
-   
-#         # In JPython you can declare functions and variables. 
+
+#         # In JPython you can declare functions and variables.
 #         # Functions are declared/defined with a def keyword.
 #         def factorial(n) {
 #                 if (n == 0)
 #                         return 1;
-        
-#                 # This involves a recursive call. Statements are 
+
+#                 # This involves a recursive call. Statements are
 #                 # terminated with semicolons.
 #                 return n * factorial(n-1);
 #         }
-        
-        
+
+
 #         def iterativeFactorial(n) {
-#                 # The decl is to declare a local variable. 
+#                 # The decl is to declare a local variable.
 #                 decl result = 1;
 #                 for i in range(1,n+1) {
 #                         result = result * i;
 #                 }
-        
+
 #                 return result;
 #         }
-        
-        
-        
+
+
+
 #         def main() {
 #                 print("The factorial of 5 is", factorial(5));
 #                 print('The iterative factorial of 5 is', iterativeFactorial(5));
@@ -125,18 +125,18 @@ chmod  +x "$name"
 
 # *)
 
-# (* Comments for the scangen input file appear 
+# (* Comments for the scangen input file appear
 #    within paren asterisk pairs as shown here. *)
 
 # #CLASSES
 
 
-# (* The classes defines classes of ASCII character codes. All 
+# (* The classes defines classes of ASCII character codes. All
 #    supported variants of the class definitions are shown here.
-#    The ^ operator means that the class includes all ASCII 
+#    The ^ operator means that the class includes all ASCII
 #    codes (i.e. 0 to 255) that are NOT the given character
 #    codes. The names of the classes below describe their
-#    true nature. 
+#    true nature.
 # *)
 
 # anycharbutnewline = ^10..13;
@@ -152,8 +152,8 @@ chmod  +x "$name"
 # #KEYWORDS
 
 # (* Keywords are optional but define the identifier tokens that should
-#    be recognized as keywords and not identifiers. 
-   
+#    be recognized as keywords and not identifiers.
+
 #    The number is a token identifier that may be used instead of the actual
 #    string to identify the keyword. Constants like the name def_keyword
 #    are defined by scangen for each keyword identifier in the generated scanner.
@@ -182,15 +182,15 @@ chmod  +x "$name"
 # #TOKENS
 
 # (* The identifier token must be the first token defined in this list for the keyword
-#    definitions given above. 
-   
+#    definitions given above.
+
 #    The token identifier numbers also have constants defined for them like the name
-#    identifier_token for instance. These names are created by the scangen program in the 
-#    generated scanner. 
-   
-#    The name "comment" is a special name. If used, it represents comments that are to be 
-#    ignored by the scanner. Comment tokens are filtered out by the generated scanner. 
-   
+#    identifier_token for instance. These names are created by the scangen program in the
+#    generated scanner.
+
+#    The name "comment" is a special name. If used, it represents comments that are to be
+#    ignored by the scanner. Comment tokens are filtered out by the generated scanner.
+
 # *)
 
 
