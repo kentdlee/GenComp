@@ -3,6 +3,6 @@ GenComp is a compiler front-end generator illustrating many of the concepts of r
 
 You can find a website with suggested readings and exercises that go along with this repository at 
 
-http://cs.luther.edu/~leekent/ComputationalModels
+http://kentdlee.github.io/ComputationalModels/
 
 This could be useful in a course on Computational Models or Descrete Structures.
